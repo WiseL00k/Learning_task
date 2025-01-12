@@ -1,3 +1,5 @@
+
+
 # 学习心得
 
 学到了如何编写URDF
@@ -35,6 +37,7 @@ http://wiki.ros.org/diff_drive_controller
 若要获得urdf的参数，可参考下面代码
 
 ```c++
+
 const std::string model_param_name = "robot_description";
     bool res = root_nh.hasParam(model_param_name);
     std::string robot_model_str="";
@@ -48,4 +51,19 @@ const std::string model_param_name = "robot_description";
 
     urdf::JointConstSharedPtr left_wheel_joint(model->getJoint(left_wheel_name));
     urdf::JointConstSharedPtr right_wheel_joint(model->getJoint(right_wheel_name));
+```
+
+## Usage
+
+```
+mon launch learn_description load_description.launch
+mon launch chassis_controller load_controller.launch
+```
+
+向/controller/diff_drive_controller/cmd_vel话题发送消息可操控小车运动。
+
+若要使用键盘控制
+
+```
+roslaunch chassis_controller teleop_twist_keyboard
 ```
