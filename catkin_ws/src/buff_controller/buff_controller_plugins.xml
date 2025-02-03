@@ -1,0 +1,12 @@
+<library path="lib/libbuff_controller">
+
+    <class name="buff_controller/BuffController"
+           type="buff_controller::BuffController"
+           base_class_type="controller_interface::ControllerBase">
+        <description>
+            The BuffController is RoboMaster buff motor controller. It expects a EffortJointInterface
+            type of hardware interface.
+        </description>
+    </class>
+
+</library>

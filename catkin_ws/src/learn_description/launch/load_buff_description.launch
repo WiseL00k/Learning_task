@@ -1,0 +1,9 @@
+<launch>
+    <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+    <!-- push robot_description to factory and spawn robot in gazebo -->
+    <param name="robot_description"
+           command="$(find xacro)/xacro $(find learn_description)/urdf/buff_motor.urdf.xacro"/>
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" clear_params="true"
+          args="-param robot_description -urdf -model rmrobot" output="screen"/>
+</launch>

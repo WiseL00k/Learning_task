@@ -1,0 +1,10 @@
+controller:
+  buff_controller:
+    type: buff_controller/BuffController
+    joint_name: "joint1"
+    joint_pid: { p: 55.0,  i: 0, d: 0.0032, antiwindup: true }
+    feedForward: false
+    Kf: 0.1
+  joint_state_controller:
+    type: joint_state_controller/JointStateController
+    publish_rate: 50
