@@ -1,4 +1,4 @@
-catkin_ws/build
-catkin_ws/devel
-logs
+build
+devel
 .catkin_tools
+logs
