@@ -58,6 +58,7 @@
     <depend>pluginlib</depend>
     <depend>control_toolbox</depend>
     <depend>realtime_tools</depend>
+    <depend>dynamic_reconfigure</depend>
     <build_depend>roslint</build_depend>
     <exec_depend>controller_manager</exec_depend>    <!-- The export tag contains other, unspecified, tags -->
     <export>

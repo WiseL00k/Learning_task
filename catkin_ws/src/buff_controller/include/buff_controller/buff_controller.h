@@ -21,6 +21,8 @@
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 #include <boost/random.hpp>
+#include <dynamic_reconfigure/server.h>
+#include <buff_controller/paramsConfig.h>
 
 namespace buff_controller
 {
@@ -41,6 +43,10 @@ private:
   void update_target_vel();
   void update_joint_state();
   void update_current_state(const std_msgs::Int32::ConstPtr& msg);
+  void param_callback(buff_controller::paramsConfig& config, uint32_t level)
+  {
+    Kf_ = config.Kf;
+  }
 
   std::string joint_name_;
   ros::Time start_time_;
@@ -71,6 +77,8 @@ private:
   ros::Subscriber state_sub_;
   ros::Publisher target_vel_pub_;
   control_toolbox::Pid joint_pid_controller_;
+
+  dynamic_reconfigure::Server<buff_controller::paramsConfig>::CallbackType cbType;
 
 }; /* buff_controller */
 

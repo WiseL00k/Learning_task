@@ -28,6 +28,13 @@ bool BuffController::init(hardware_interface::EffortJointInterface* effort_joint
 
   start_time_ = ros::Time::now();
 
+  static dynamic_reconfigure::Server<buff_controller::paramsConfig> dr_server_(
+      ros::NodeHandle(controller_nh, "feedForward"));
+
+  cbType = boost::bind(&BuffController::param_callback, this, _1, _2);
+  // 5.服务器对象调用回调对象
+  dr_server_.setCallback(cbType);
+
   return true;
 }
 
@@ -51,7 +58,7 @@ void BuffController::update(const ros::Time& time, const ros::Duration& period)
   }
   pid_out_ = joint_pid_controller_.computeCommand(error_, period_);
   commanded_effort_ = pid_out_ + feedForward_out_;
-
+  ROS_INFO("Kf:%.2lf pid_out_:%.2lf feedForward_out_:%.2lf", Kf_, pid_out_, feedForward_out_);
   joint_.setCommand(commanded_effort_);
 }
 
@@ -84,11 +91,13 @@ void BuffController::update_target_vel()
     b = 2.090 - a;
     start_time_ = ros::Time::now();
     state_changed_ = false;
+
+    ROS_INFO("a:%.3lf, b:%.3lf, w:%.3lf", a, b, w);
   }
   last_target_vel_ = target_vel_;
   if (state_ == SMALL)
   {
-    target_vel_ = 10;
+    target_vel_ = M_PI / 3.0f;
   }
   else if (state_ == BIG)
   {

@@ -17,12 +17,24 @@ find_package(catkin REQUIRED
         roslint
         hardware_interface
         controller_interface
+        dynamic_reconfigure
+)
+
+# 生成动态参数头文件
+generate_dynamic_reconfigure_options(
+        cfg/params.cfg
 )
 
 catkin_package(
         #  INCLUDE_DIRS include
         #  LIBRARIES buff_controller
-        CATKIN_DEPENDS roscpp std_msgs control_toolbox
+        CATKIN_DEPENDS
+        roscpp
+        std_msgs
+        control_toolbox
+        hardware_interface
+        controller_interface
+        dynamic_reconfigure
         #  DEPENDS system_lib
 )
 
@@ -35,6 +47,7 @@ catkin_package(
 include_directories(
         include
         ${catkin_INCLUDE_DIRS}
+        ${CMAKE_CURRENT_BINARY_DIR}
 )
 
 ## Declare a C++ library
@@ -50,3 +63,5 @@ add_library(${PROJECT_NAME}
 add_dependencies(${PROJECT_NAME}
         ${catkin_EXPORTED_TARGETS}
 )
+
+add_dependencies(${PROJECT_NAME} ${PROJECT_NAME}_gencfg)
