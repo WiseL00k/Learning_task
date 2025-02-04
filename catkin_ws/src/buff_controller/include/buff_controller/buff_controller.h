@@ -43,6 +43,7 @@ private:
   void update_target_vel();
   void update_joint_state();
   void update_current_state(const std_msgs::Int32::ConstPtr& msg);
+  void compute_command();
   void param_callback(buff_controller::paramsConfig& config, uint32_t level)
   {
     Kf_ = config.Kf;

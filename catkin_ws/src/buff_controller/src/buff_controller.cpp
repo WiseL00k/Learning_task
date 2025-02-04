@@ -46,19 +46,8 @@ void BuffController::update(const ros::Time& time, const ros::Duration& period)
   update_target_vel();
   update_joint_state();
 
-  error_ = target_vel_ - current_velocity_;
-  if (feedForward_)
-  {
-    error_target_ = target_vel_ - last_target_vel_;
-    feedForward_out_ = error_target_ * Kf_;
-  }
-  else
-  {
-    feedForward_out_ = 0;
-  }
-  pid_out_ = joint_pid_controller_.computeCommand(error_, period_);
-  commanded_effort_ = pid_out_ + feedForward_out_;
-  ROS_INFO("Kf:%.2lf pid_out_:%.2lf feedForward_out_:%.2lf", Kf_, pid_out_, feedForward_out_);
+  compute_command();
+
   joint_.setCommand(commanded_effort_);
 }
 
@@ -116,6 +105,23 @@ void BuffController::update_current_state(const std_msgs::Int32::ConstPtr& msg)
   else
     state_changed_ = false;
   state_ = static_cast<BuffState>(msg->data);
+}
+
+void BuffController::compute_command()
+{
+  error_ = target_vel_ - current_velocity_;
+  if (feedForward_)
+  {
+    error_target_ = target_vel_ - last_target_vel_;
+    feedForward_out_ = error_target_ * Kf_;
+  }
+  else
+  {
+    feedForward_out_ = 0;
+  }
+  pid_out_ = joint_pid_controller_.computeCommand(error_, period_);
+  commanded_effort_ = pid_out_ + feedForward_out_;
+  ROS_INFO("Kf:%.2lf pid_out_:%.2lf feedForward_out_:%.2lf", Kf_, pid_out_, feedForward_out_);
 }
 
 PLUGINLIB_EXPORT_CLASS(buff_controller::BuffController, controller_interface::ControllerBase)
