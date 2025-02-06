@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="motor">
+    <xacro:arg name="use_simulation" default="true"/>
     <!-- Constants for robot dimensions -->
     <xacro:property name="mass" value="0.5"/> <!-- arbitrary value for mass -->
     <xacro:property name="width" value="0.1"/> <!-- Square dimensions (widthxwidth) of beams -->
@@ -78,12 +79,16 @@
         </joint>
         <actuator name="joint1_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-            <mechanicalReduction>19.2032</mechanicalReduction>
+            <!-- <mechanicalReduction>19.2032</mechanicalReduction> -->
+            <mechanicalReduction>36</mechanicalReduction>
         </actuator>
     </transmission>
-    <gazebo>
-        <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-            <robotNamespace>/</robotNamespace>
-        </plugin>
-    </gazebo>
+
+    <xacro:if value="$(arg use_simulation)">
+        <gazebo>
+            <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+                <robotNamespace>/</robotNamespace>
+            </plugin>
+        </gazebo>
+    </xacro:if>
 </robot>
