@@ -24,7 +24,7 @@ bool BuffController::init(hardware_interface::EffortJointInterface* effort_joint
   // load PID Controller using gains set on parameter server
   joint_pid_controller_.init(ros::NodeHandle(controller_nh, "joint_pid"));
 
-  state_ = SMALL;
+  state_ = STOP;
 
   start_time_ = ros::Time::now();
 
@@ -62,7 +62,7 @@ void BuffController::update_target_vel()
 {
   static double a{}, b{}, w{}, lower_bound{}, upper_bound{}, t{};
 
-  if (state_changed_)
+  if (state_changed_ && state_ == BIG)
   {
     boost::random::mt19937 gen(static_cast<unsigned int>(std::time(nullptr)));
 
@@ -92,6 +92,10 @@ void BuffController::update_target_vel()
   {
     t = (current_time_ - start_time_).toSec();
     target_vel_ = a * sin(w * t) + b;
+  }
+  else if (state_ == STOP)
+  {
+    target_vel_ = 0;
   }
   std_msgs::Float64 target_vel_msg;
   target_vel_msg.data = target_vel_;

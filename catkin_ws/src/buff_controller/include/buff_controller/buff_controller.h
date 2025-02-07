@@ -72,6 +72,7 @@ private:
   {
     BIG = 1,
     SMALL,
+    STOP,
   } BuffState;
   int state_ = BIG;
 
