@@ -175,6 +175,14 @@ mon launch buff_controller load_controller.launch
 
 ![](../imgs/buff_controller_params.png)
 
+### 使用
+
+启动控制器后，对话题/controllers/buff_controller/state
+
+- 发送1开启大符转动模式
+- 发送2开启小符转动模式
+- 发送3停止转动。
+
 ### PID经验
 
 - 速度控制，常用PI控制，用于快速达到目标速度
