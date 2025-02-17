@@ -13,10 +13,12 @@
          load_chassis:=$(arg load_chassis) load_gimbal:=$(arg load_gimbal) load_shooter:=$(arg load_shooter)
          load_arm:=$(arg load_arm)
          use_simulation:=false roller_type:=none
+
 "/>
 
     <rosparam file="$(find rm_hw)/config/actuator_coefficient.yaml" command="load" ns="rm_hw"/>
-    <rosparam file="$(find rm_hw)/config/$(arg robot_type).yaml" command="load"/>
+<!--     <rosparam file="$(find rm_hw)/config/$(arg robot_type).yaml" command="load"/> -->
+    <rosparam file="$(find rm_hw)/config/buff_hw_config.yaml" command="load"/>
 
     <node name="rm_hw" launch-prefix="$(arg launch_prefix)" pkg="rm_hw" type="rm_hw" respawn="false"
           clear_params="true"/>

@@ -32,7 +32,7 @@ bool BuffController::init(hardware_interface::EffortJointInterface* effort_joint
       ros::NodeHandle(controller_nh, "feedForward"));
 
   cbType = boost::bind(&BuffController::param_callback, this, _1, _2);
-  // 5.服务器对象调用回调对象
+  // 服务器对象调用回调对象
   dr_server_.setCallback(cbType);
 
   return true;
@@ -105,7 +105,10 @@ void BuffController::update_target_vel()
 void BuffController::update_current_state(const std_msgs::Int32::ConstPtr& msg)
 {
   if (msg->data != state_)
+  {
     state_changed_ = true;
+    ROS_INFO("state: %d", msg->data);
+  }
   else
     state_changed_ = false;
   state_ = static_cast<BuffState>(msg->data);
@@ -125,7 +128,7 @@ void BuffController::compute_command()
   }
   pid_out_ = joint_pid_controller_.computeCommand(error_, period_);
   commanded_effort_ = pid_out_ + feedForward_out_;
-  ROS_INFO("Kf:%.2lf pid_out_:%.2lf feedForward_out_:%.2lf", Kf_, pid_out_, feedForward_out_);
+  //  ROS_INFO("Kf:%.2lf pid_out_:%.2lf feedForward_out_:%.2lf", Kf_, pid_out_, feedForward_out_);
 }
 
 PLUGINLIB_EXPORT_CLASS(buff_controller::BuffController, controller_interface::ControllerBase)

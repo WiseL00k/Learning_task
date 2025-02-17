@@ -59,6 +59,7 @@ include_directories(
 add_library(${PROJECT_NAME}
         src/${PROJECT_NAME}.cpp
 )
+target_link_libraries(buff_controller ${catkin_LIBRARIES})
 
 add_dependencies(${PROJECT_NAME}
         ${catkin_EXPORTED_TARGETS}
